@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import NewDeckForm from './NewDeckForm';
-import AddCards from './AddCards';
+import Cards from './Cards';
 
 const Tabs = TabNavigator({
     NewDeck: {
       screen: NewDeckForm
     },
-    AddCards: {
-      screen: AddCards
+    Cards: {
+      screen: Cards
     },
 });
 

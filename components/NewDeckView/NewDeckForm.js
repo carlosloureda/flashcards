@@ -5,21 +5,24 @@ import {
 } from 'react-native';
 
 import { saveDeckTitle } from '../../utils/api.js';
+import Cards from './Cards';
 
 class NewDeckForm extends Component {
 
     state = {
         title: ''
     }
+
     submit = () => {
+        const { navigate } = this.props.navigation;
         console.log("form submited");
         saveDeckTitle(this.state.title).then(() => {
             console.log("saved");
+            navigate('Cards', {title: this.state.title})
         })
         .catch(err => {
             console.log("Error: ",err);
         })
-
     }
 
     render() {

@@ -12,7 +12,7 @@ class DeckView extends Component {
         const deckTitle = this.props.navigation.state.params.title;
         getDeck(deckTitle).then((res) => {
             this.setState({
-                deck: JSON.parse(res)
+                deck: res
             })
         })
     }
@@ -25,6 +25,16 @@ class DeckView extends Component {
                 {this.state.deck &&
                     <Text>Title: {this.state.deck.title}</Text>
                 }
+
+                {this.state.deck && this.state.deck.questions &&
+                    this.state.deck.questions.map(question => (
+                        <Text key={question.question}>
+                            <Text>question: {question.question}</Text>
+                            <Text>answer: {question.answer}</Text>
+                        </Text>
+                    ))
+                }
+
             </View>
         )
     }
