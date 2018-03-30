@@ -36,7 +36,6 @@ class AddCardView extends Component {
             question: this.state.card.question,
             answer: this.state.card.answer
         }
-        console.log("**card is: ", card);
         addCardToDeck(title, card)
         .then((deck) => {
             console.log("sucess saving card")

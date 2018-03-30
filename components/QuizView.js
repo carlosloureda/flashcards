@@ -3,10 +3,11 @@ import { View, Text, StyleSheet, Button, FlatList } from 'react-native';
 import { getDeck } from '../utils/api.js';
 import { cardsInDeck } from '../utils/model.js';
 import AddCardView from './AddCardView';
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers.js';
 
 const Progress = ({total, answered}) => {
     return (
-        <Text>{answered ? answered : 0}/{total}</Text>
+        <Text>{answered + 1}/{total}</Text>
     )
 }
 
@@ -16,7 +17,7 @@ const CORRECT_ANSWER = 'CORRECT_ANSWER';
 class QuizView extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: `Quiz: ${navigation.state.params.title}`
+            title: `Quiz: ${navigation.state.params.deck.title}`
         }
     }
 
@@ -51,7 +52,11 @@ class QuizView extends Component {
             correct_answers: (type == CORRECT_ANSWER) ? this.state.correct_answers + 1 : this.state.correct_answers,
             questions_answered: this.state.questions_answered + 1,
             flip_card: false
-        }, () => {console.log("state: ", this.state);})
+        }, () => {
+            if (this.state.questions.length === this.state.questions_answered) {
+                clearLocalNotification().then(setLocalNotification);
+            }
+        })
     }
 
     finalScore = () => {
@@ -63,32 +68,14 @@ class QuizView extends Component {
     render() {
         const { navigate } = this.props.navigation;
         const { questions, questions_answered, actual_question_index } = this.state;
-        console.log("questions: ", questions);
-        // console.log("question: ", questions[0]['question']);
-        console.log("questions: ", questions);
-        for (q of questions) {
-            console.log("q: ", q.question);
-            console.log("a: ", q.answer);
-        }
-        questions.map(q => {
-            console.log("->q: ", q.question);
-            console.log("->a: ", q.answer);
-        })
-        if (questions.length) {
-            console.log("questions[0]: ", questions[0]);
-            console.log("questions[0].question: ", questions[0].question);
-
-        }
-        // const question = JSON.parse(questions[0])
-        // const values = Object.values(questions[0])
-        // console.log("values: ", values);
-        // console.log("questions[0].question: ", Object.values(questions[0])[0].question);
         const total_questions = questions.length ;
         return (
             <View style={styles.container}>
-                <Progress
-                    total={total_questions} answered={questions_answered}
-                />
+                {questions_answered < total_questions &&
+                    <Progress
+                        total={total_questions} answered={questions_answered}
+                    />
+                }
 
                 {!!total_questions && ! this.state.flip_card && questions_answered < total_questions &&
                     <View>

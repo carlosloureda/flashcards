@@ -39,9 +39,7 @@ export function saveDeckTitle(title) {
 export function addCardToDeck(id, card) {
   return AsyncStorage.getItem(id)
   .then((deck) => {
-    console.log("deck: ", deck);
     deck = JSON.parse(deck);
-    console.log("deck: ", deck);
     deck.questions.push(card);
     return AsyncStorage.setItem(id, JSON.stringify(deck))
     .then(() => {
