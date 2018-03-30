@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import {
     KeyboardAvoidingView, Text, TextInput,
-    StyleSheet, SubmitBtn, TouchableOpacity
+    StyleSheet, SubmitBtn, TouchableOpacity,
+    Keyboard
 } from 'react-native';
+import DeckView from './DeckView';
+import { saveDeckTitle } from '../utils/api.js';
+import { NavigationActions } from 'react-navigation'
 
-import { saveDeckTitle } from '../../utils/api.js';
-import Cards from './Cards';
+// const resetAction = NavigationActions.reset({
+//   index: 0,
+//   actions: [
+//     NavigationActions.navigate({ routeName: 'Home'}),
+//     NavigationActions.navigate({ routeName: 'NewDeck'}),
+//     NavigationActions.navigate({ routeName: 'DeckView'})
+//   ]
+// })
 
-class NewDeckForm extends Component {
+class NewDeckView extends Component {
 
     state = {
         title: ''
@@ -15,10 +25,14 @@ class NewDeckForm extends Component {
 
     submit = () => {
         const { navigate } = this.props.navigation;
-        console.log("form submited");
+        const navigation  = this.props.navigation;
+        console.log("navigate: ", navigate);
+        Keyboard.dismiss();
         saveDeckTitle(this.state.title).then(() => {
-            console.log("saved");
-            navigate('Cards', {title: this.state.title})
+            console.log("saved: ", this.state.title);
+            // navigation.dispatch(resetAction);
+            //TODO: reset history or remove this view from stack
+            navigate('DeckView', {title: this.state.title})
         })
         .catch(err => {
             console.log("Error: ",err);
@@ -54,4 +68,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default NewDeckForm;
+export default NewDeckView;

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {
     KeyboardAvoidingView, Text, TextInput,
-    StyleSheet, SubmitBtn, TouchableOpacity
+    StyleSheet, SubmitBtn, TouchableOpacity, Keyboard
 } from 'react-native';
-import { addCardToDeck } from '../../utils/api.js';
+import { addCardToDeck } from '../utils/api.js';
 import PropTypes from 'prop-types';
 
-class AddCardForm extends Component {
+class AddCardView extends Component {
 
     state = {
         card: {
@@ -29,16 +29,19 @@ class AddCardForm extends Component {
     }
 
     onAddCardSubmit = () => {
-        console.log("onAddCardSubmit");
+        const { navigate } = this.props.navigation;
+        const { title } = this.props.navigation.state.params;
+        Keyboard.dismiss()
         const card = {
             question: this.state.card.question,
             answer: this.state.card.answer
         }
         console.log("**card is: ", card);
-        addCardToDeck(this.props.title, card)
+        addCardToDeck(title, card)
         .then((deck) => {
             console.log("sucess saving card")
-            this.props.onNewCardAdded(deck);
+            //TODO: reset history or remove this view from stack
+            navigate('DeckView', {title: title})
         })
         .catch((err) => console.log("error: ", err))
     }
@@ -69,8 +72,8 @@ class AddCardForm extends Component {
     }
 }
 
-AddCardForm.propTypes = {
-    title: PropTypes.string.isRequired,
+AddCardView.propTypes = {
+    // title: PropTypes.string.isRequired,
     // onNewCardAdded: PropTypes.function.isRequired,
 };
 
@@ -83,4 +86,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddCardForm;
+export default AddCardView;

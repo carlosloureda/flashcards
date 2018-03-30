@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity } from 'react-native';
 import { getDecks } from '../utils/api.js';
+import { cardsInDeck } from '../utils/model.js';
 
-cardsInDeck = (deck) => {
-    return deck && deck.questions ? deck.questions.length :  0;
-}
 const DeckListItem = ({deck, navigate}) => {
     console.log("~deck: ", deck);
     console.log("navigate: ", navigate);
@@ -32,6 +30,7 @@ class DeckListView extends Component {
     }
 
     componentDidMount = () => {
+        console.log("ComponentDIdMount called");
         getDecks().then((res) => {
             console.log("Res: ", res);
             var decks = Object.values(res).map(v => v);
