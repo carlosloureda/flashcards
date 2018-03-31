@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { addCardToDeck } from '../utils/api.js';
 import PropTypes from 'prop-types';
+import { primaryButton, primaryColor, titleColor } from '../utils/colors.js';
 
 class AddCardView extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -60,15 +61,19 @@ class AddCardView extends Component {
                 <View style={styles.formGroup}>
                     <Text style={styles.text}>Question</Text>
                     <TextInput
-                        style={{height: 40, width: 250}}
+                        multiline = {true}
+                        numberOfLines = {4}
+                        style={{height: 100, width: 250}}
                         onChangeText={(text) => this.onInputChange('question', text)}
                         value={this.state.card.question}
-                    />
+                        />
                 </View>
                 <View style={styles.formGroup}>
                     <Text style={styles.text}>Answer</Text>
                     <TextInput
-                        style={{height: 40, width: 250}}
+                        multiline = {true}
+                        numberOfLines = {4}
+                        style={{height: 100, width: 250}}
                         onChangeText={(text) => this.onInputChange('answer', text)}
                         value={this.state.card.answer}
                     />
@@ -77,6 +82,7 @@ class AddCardView extends Component {
                     style={styles.buttonGroup}
                 >
                     <Button
+                        color={primaryButton}
                         onPress={this.onAddCardSubmit}
                         title="Submit"
                     />
@@ -95,10 +101,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#754B8E',
+        backgroundColor: primaryColor,
     },
     text: {
-        color: '#FFFEAA'
+        color: titleColor
     },
     formGroup: {
         flex: 2,

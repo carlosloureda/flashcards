@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, FlatList } from 'react-native';
 import { getDeck } from '../utils/api.js';
 import { cardsInDeck } from '../utils/model.js';
 import AddCardView from './AddCardView';
+import { secondaryColor, primaryColor, titleColor, textColor, primaryButton } from '../utils/colors.js';
 
 class DeckView extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -42,18 +43,21 @@ class DeckView extends Component {
                     <Button
                         title="Add card"
                         style={styles.addBtn}
+                        color='#12073B'
                         onPress={() =>
                             navigate('AddCard', { title: deck.title })
                         }
                         />
-
-                    <Button
-                        title="Start quiz"
-                        style={styles.startQuiz}
-                        onPress={() =>
-                            navigate('Quiz', { deck: deck })
-                        }
-                    />
+                    {!!cardsInDeck(deck) &&
+                        <Button
+                            title="Start quiz"
+                            color='#522B73'
+                            style={styles.startQuiz}
+                            onPress={() =>
+                                navigate('Quiz', { deck: deck })
+                            }
+                        />
+                    }
                 </View>
             </View>
         )
@@ -64,13 +68,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#877CB0',
+        backgroundColor: secondaryColor,
     },
     deckTitles: {
         flex: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#754B8E',
+        backgroundColor: primaryColor,
         margin: 10
     },
     buttonGroup: {
@@ -80,20 +84,20 @@ const styles = StyleSheet.create({
         // backgroundColor: 'blue'
     },
     title: {
-        fontSize: 80,
-        color: '#FFFEAA'
+        fontSize: 50,
+        color: titleColor
     },
     totalCards: {
-        fontSize: 40,
-        color: '#554600'
+        fontSize: 25,
+        color: textColor
     },
     addBtn: {
-        backgroundColor: '#12073B',
-        borderColor: 'red'
+        backgroundColor: primaryButton,
+        // borderColor: 'red'
     },
     startQuiz: {
-        backgroundColor: 'yellow',
-        color: 'red',
+        // backgroundColor: 'yellow',
+        // color: 'red',
     }
 });
 

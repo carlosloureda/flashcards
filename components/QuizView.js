@@ -4,6 +4,7 @@ import { getDeck } from '../utils/api.js';
 import { cardsInDeck } from '../utils/model.js';
 import AddCardView from './AddCardView';
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers.js';
+import { primaryColor, secondaryColor, titleColor, textColor } from '../utils/colors.js';
 
 const Progress = ({total, answered}) => {
     return (
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#754B8E',
+        backgroundColor: primaryColor,
         margin: 10,
         borderRadius: 10
     },
@@ -143,17 +144,17 @@ const styles = StyleSheet.create({
     progress: {
         flex: 1,
         alignSelf: 'flex-start',
-        color: '#BBA7CD',
+        color: secondaryColor,
         padding: 5,
         fontSize: 15
     },
     question: {
         fontSize: 30,
-        color: '#FFFEAA'
+        color: titleColor
     },
     answer: {
         fontSize: 20,
-        color: '#554600'
+        color: textColor
     },
     button: {
         alignSelf: 'stretch',

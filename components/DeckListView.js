@@ -5,6 +5,10 @@ import {
     Platform
 } from 'react-native';
 import { getDecks } from '../utils/api.js';
+import {
+    primaryButton, primaryColor, secondaryColor,
+    titleColor, textColor
+} from '../utils/colors.js';
 import { cardsInDeck } from '../utils/model.js';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
@@ -57,10 +61,15 @@ class DeckListView extends Component {
         })
     }
 
+    shouldComponentUpdate = (nextProps, nextState) =>{
+        // return a boolean value
+        console.log("inside shouldComponentUpdate");
+        return true;
+    }
+
     render() {
         const { navigate } = this.props.navigation;
         const navigation = this.props.navigation;
-        const tintColor = '#12073B'
         return (
             <View style={styles.container}>
                 <FlatList
@@ -72,13 +81,13 @@ class DeckListView extends Component {
                 {Platform.OS === 'ios' ?
                     <Ionicons
                         style={styles.fabButton}
-                        name='ios-add-circle' size={60} color={tintColor}
+                        name='ios-add-circle' size={60} color={primaryButton}
                         onPress={() => navigate('NewDeck', { })}
                         />
                         :
                     <Ionicons
                         style={styles.fabButton}
-                        name='md-add-circle' size={60} color={tintColor}
+                        name='md-add-circle' size={60} color={primaryButton}
                         onPress={() => navigate('NewDeck', { })}
                     />
                 }
@@ -90,7 +99,7 @@ class DeckListView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#877CB0',
+        backgroundColor: secondaryColor,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -98,18 +107,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         alignItems: 'center',
-        color: '#554600'
+        color: textColor
     },
     title: {
         flexDirection: 'row',
         flex: 1,
         alignItems: 'center',
         fontSize: 30,
-        color: '#FFFEAA'
+        color: titleColor
     },
     deck: {
         // flex: 1,
-        backgroundColor: '#754B8E',
+        backgroundColor: primaryColor,
         alignItems: 'center',
         width: 300,
         height: 100,

@@ -7,15 +7,7 @@ import {
 import DeckView from './DeckView';
 import { saveDeckTitle } from '../utils/api.js';
 import { NavigationActions } from 'react-navigation'
-
-// const resetAction = NavigationActions.reset({
-//   index: 0,
-//   actions: [
-//     NavigationActions.navigate({ routeName: 'Home'}),
-//     NavigationActions.navigate({ routeName: 'NewDeck'}),
-//     NavigationActions.navigate({ routeName: 'DeckView'})
-//   ]
-// })
+import { primaryColor, titleColor } from '../utils/colors';
 
 class NewDeckView extends Component {
 
@@ -36,8 +28,6 @@ class NewDeckView extends Component {
         const navigation  = this.props.navigation;
         Keyboard.dismiss();
         saveDeckTitle(this.state.title).then(() => {
-            // navigation.dispatch(resetAction);
-            //TODO: reset history or remove this view from stack
             replace('DeckView', {title: this.state.title})
         })
         .catch(err => {
@@ -68,15 +58,15 @@ class NewDeckView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#754B8E',
+        backgroundColor: primaryColor,
         alignItems: 'center',
         justifyContent: 'center',
     },
     text: {
-        color: '#FFFEAA'
+        color: titleColor
     },
     btn: {
-        color: '#12073B'
+        color: primaryColor
     }
 
 });
