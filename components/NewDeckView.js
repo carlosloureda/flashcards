@@ -32,13 +32,13 @@ class NewDeckView extends Component {
     }
 
     submit = () => {
-        const { navigate } = this.props.navigation;
+        const { replace } = this.props.navigation;
         const navigation  = this.props.navigation;
         Keyboard.dismiss();
         saveDeckTitle(this.state.title).then(() => {
             // navigation.dispatch(resetAction);
             //TODO: reset history or remove this view from stack
-            navigate('DeckView', {title: this.state.title})
+            replace('DeckView', {title: this.state.title})
         })
         .catch(err => {
             console.log("Error: ",err);

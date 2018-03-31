@@ -68,7 +68,8 @@ class QuizView extends Component {
     }
 
     render() {
-        const { navigate } = this.props.navigation;
+        const { navigate, popToTop } = this.props.navigation;
+
         const { questions, questions_answered, actual_question_index } = this.state;
         const total_questions = questions.length ;
         return (
@@ -113,7 +114,7 @@ class QuizView extends Component {
                             <Text>Final Score: {this.finalScore()}%</Text>
                             <Button
                                 title="Home"
-                                onPress={() => navigate('Home', {})}
+                                onPress={() => popToTop()}
                             />
                         </View>
                     }

@@ -36,7 +36,7 @@ class AddCardView extends Component {
     }
 
     onAddCardSubmit = () => {
-        const { navigate } = this.props.navigation;
+        const { goBack } = this.props.navigation;
         const { title } = this.props.navigation.state.params;
         Keyboard.dismiss()
         const card = {
@@ -46,8 +46,7 @@ class AddCardView extends Component {
         addCardToDeck(title, card)
         .then((deck) => {
             console.log("sucess saving card")
-            //TODO: reset history or remove this view from stack
-            navigate('DeckView', {title: title})
+            goBack()
         })
         .catch((err) => console.log("error: ", err))
     }
