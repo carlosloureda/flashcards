@@ -4,7 +4,9 @@ import {
     Button, FlatList, TouchableOpacity,
     Platform
 } from 'react-native';
-import { getDecks } from '../utils/api.js';
+// import { getDecks } from '../utils/api.js';
+import { connect } from 'react-redux'
+import { fetchDecks } from '../actions/index'
 import {
     primaryButton, primaryColor, secondaryColor,
     titleColor, textColor
@@ -39,41 +41,41 @@ class DeckListView extends Component {
         decks: []
     }
 
+    componentWillMount = () => {
+        console.log("componentWillMount");
+    }
     componentDidMount = () => {
-        getDecks().then((res) => {
-            var decks = Object.values(res).map(v => v);
-            let positionForNotKey = -1;
-            // trick to avoid: VirtualizedList: missing keys for items, make sure to specify a key property on each item or provide a custom keyExtractor.
-            decks.forEach((deck, i) => {
-                if (deck && typeof deck === 'object') {
-                        deck.key = i + 1;
-                } else {
-                    positionForNotKey = i;
-                }
-            });
+        this.props.fetchDecks().then((res) => {
 
-            decks.splice(positionForNotKey, 1);
-            this.setState({
-                decks: decks
-            })
         }).catch(err => {
             console.log("err: ", err);
         })
     }
 
-    shouldComponentUpdate = (nextProps, nextState) =>{
-        // return a boolean value
-        console.log("inside shouldComponentUpdate");
-        return true;
+    parseDecks = () => {
+        var decks = Object.values(this.props.decks).map(v => v);
+        let positionForNotKey = -1;
+        // trick to avoid: VirtualizedList: missing keys for items, make sure to specify a key property on each item or provide a custom keyExtractor.
+        decks.forEach((deck, i) => {
+            if (deck && typeof deck === 'object') {
+                deck.key = i + 1;
+            } else {
+                positionForNotKey = i;
+            }
+        });
+
+        decks.splice(positionForNotKey, 1);
+        return decks;
     }
 
     render() {
         const { navigate } = this.props.navigation;
         const navigation = this.props.navigation;
+        const decks = this.parseDecks();
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={this.state.decks}
+                    data={decks}
                     renderItem={({item}) =>
                         <DeckListItem deck={item} navigate={navigate} />
                     }
@@ -134,4 +136,16 @@ const styles = StyleSheet.create({
 
 });
 
-export default DeckListView;
+function mapStateToProps(state) {
+    return {
+        decks: state.decks,
+    };
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        fetchDecks: () => dispatch(fetchDecks()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeckListView)

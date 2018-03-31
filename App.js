@@ -9,6 +9,25 @@ import QuizView from './components/QuizView';
 import FlexboxExamples from './components/FlexboxExamples';
 import { setLocalNotification } from './utils/helpers'
 
+import { createStore, applyMiddleware, compose } from 'redux'
+import { Provider } from 'react-redux'
+import { createLogger } from 'redux-logger'
+import thunkMiddleware from 'redux-thunk'
+import reducer from './reducers/index.js'
+import {composeWithDevTools} from 'remote-redux-devtools';
+
+const loggerMiddleware = createLogger()
+
+const store = createStore(
+  reducer,
+  composeWithDevTools(
+    applyMiddleware(
+      thunkMiddleware, // lets us dispatch() functions
+      // loggerMiddleware // neat middleware that logs actions
+    ),
+  )
+);
+
 const Stack = StackNavigator({
   Home: { screen: DeckListView },
   // Home: { screen: FlexboxExamples },
@@ -25,16 +44,9 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <Stack />
+      <Provider store={store}>
+        <Stack />
+      </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

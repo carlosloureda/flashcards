@@ -3,9 +3,10 @@ import {
     KeyboardAvoidingView, Text, TextInput,
     StyleSheet, SubmitBtn, Button, Keyboard, View
 } from 'react-native';
-import { addCardToDeck } from '../utils/api.js';
 import PropTypes from 'prop-types';
 import { primaryButton, primaryColor, titleColor } from '../utils/colors.js';
+import { newCard } from '../actions/index';
+import { connect } from 'react-redux'
 
 class AddCardView extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -44,7 +45,8 @@ class AddCardView extends Component {
             question: this.state.card.question,
             answer: this.state.card.answer
         }
-        addCardToDeck(title, card)
+        this.props.newCard(title, card)
+        // addCardToDeck(title, card)
         .then((deck) => {
             console.log("sucess saving card")
             goBack()
@@ -118,4 +120,15 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddCardView;
+function mapStateToProps(state) {
+    return {
+    };
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        newCard: (id, card) => dispatch(newCard(id, card)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddCardView)

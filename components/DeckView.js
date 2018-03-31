@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, FlatList } from 'react-native';
-import { getDeck } from '../utils/api.js';
+import { fetchDeck } from '../actions/index';
 import { cardsInDeck } from '../utils/model.js';
 import AddCardView from './AddCardView';
 import { secondaryColor, primaryColor, titleColor, textColor, primaryButton } from '../utils/colors.js';
+import { connect } from 'react-redux'
 
 class DeckView extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -14,25 +15,19 @@ class DeckView extends Component {
         }
     }
 
-    state = {
-        deck: []
-    }
-
     componentDidMount = () => {
         const deckTitle = this.props.navigation.state.params.title;
-        getDeck(deckTitle).then((res) => {
-            this.setState({
-                deck: res
-            })
+        this.props.fetchDeck(deckTitle).then((res) => {
         })
     }
 
     render() {
+        const deckTitle = this.props.navigation.state.params.title;
         const { navigate } = this.props.navigation;
-        const { deck } = this.state;
+        const deck = this.props.decks[deckTitle];
         return (
             <View style={styles.container}>
-                {this.state.deck &&
+                {deck &&
                     <View style={styles.deckTitles}>
                         <Text style={styles.title}>{deck.title}</Text>
                         <Text style={styles.totalCards} >{cardsInDeck(deck)} cards</Text>
@@ -101,4 +96,16 @@ const styles = StyleSheet.create({
     }
 });
 
-export default DeckView;
+function mapStateToProps(state) {
+    return {
+        decks: state.decks,
+    };
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        fetchDeck: (id) => dispatch(fetchDeck(id)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeckView)

@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import {
     KeyboardAvoidingView, Text, TextInput,
     StyleSheet, SubmitBtn, TouchableOpacity,
-    Keyboard
+    Keyboard, Button
 } from 'react-native';
 import DeckView from './DeckView';
 import { saveDeckTitle } from '../utils/api.js';
 import { NavigationActions } from 'react-navigation'
 import { primaryColor, titleColor } from '../utils/colors';
+import { connect } from 'react-redux'
+import { addNewDeck } from '../actions/index'
 
 class NewDeckView extends Component {
 
@@ -24,15 +26,17 @@ class NewDeckView extends Component {
     }
 
     submit = () => {
+        console.log("submit done: ", this.state.title);
         const { replace } = this.props.navigation;
-        const navigation  = this.props.navigation;
         Keyboard.dismiss();
-        saveDeckTitle(this.state.title).then(() => {
-            replace('DeckView', {title: this.state.title})
-        })
-        .catch(err => {
-            console.log("Error: ",err);
-        })
+        if (this.props && this.props.addNewDeck) {
+            this.props.addNewDeck(this.state.title).then(() => {
+                replace('DeckView', {title: this.state.title})
+            })
+            .catch(err => {
+                console.log("Error: ",err);
+            })
+        }
     }
 
     render() {
@@ -47,9 +51,15 @@ class NewDeckView extends Component {
                     onChangeText={(text) => this.setState({...this.state, title:text})}
                     value={this.state.title}
                 />
-                <TouchableOpacity onPress={this.submit}>
+                {/* <TouchableOpacity onPress={this.submit}>
                     <Text style={styles.btn} >SUBMIT</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <Button
+                    title="Submit"
+                    color='#522B73'
+                    // style={styles.startQuiz}
+                    onPress={this.submit}
+                />
             </KeyboardAvoidingView>
         )
     }
@@ -71,4 +81,15 @@ const styles = StyleSheet.create({
 
 });
 
-export default NewDeckView;
+function mapStateToProps(state) {
+    return {
+    }
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        addNewDeck: (title) => dispatch(addNewDeck(title)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewDeckView)
