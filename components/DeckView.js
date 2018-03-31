@@ -7,7 +7,9 @@ import AddCardView from './AddCardView';
 class DeckView extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: `Deck: ${navigation.state.params.title}`
+            title: `Deck: ${navigation.state.params.title}`,
+            headerTintColor: '#754B8E',
+            headerStyle: { backgroundColor: '#522B73' }
         }
     }
 
@@ -30,34 +32,29 @@ class DeckView extends Component {
         return (
             <View style={styles.container}>
                 {this.state.deck &&
-                    <View>
-                        <Text>Title: {deck.title}</Text>
-                        <Text>{cardsInDeck(deck)} cards</Text>
+                    <View style={styles.deckTitles}>
+                        <Text style={styles.title}>{deck.title}</Text>
+                        <Text style={styles.totalCards} >{cardsInDeck(deck)} cards</Text>
                     </View>
                 }
 
-                {/* {this.state.deck && this.state.deck.questions &&
-                    this.state.deck.questions.map(question => (
-                        <Text key={question.question}>
-                            <Text>question: {question.question}</Text>
-                            <Text>answer: {question.answer}</Text>
-                        </Text>
-                    ))
-                } */}
-                <Button
-                    title="Add card"
-                    onPress={() =>
-                        navigate('AddCard', { title: deck.title })
-                    }
-                />
+                <View style={styles.buttonGroup}>
+                    <Button
+                        title="Add card"
+                        style={styles.addBtn}
+                        onPress={() =>
+                            navigate('AddCard', { title: deck.title })
+                        }
+                        />
 
-                <Button
-                    title="Start quiz"
-                    onPress={() =>
-                        navigate('Quiz', { deck: deck })
-                    }
-                />
-
+                    <Button
+                        title="Start quiz"
+                        style={styles.startQuiz}
+                        onPress={() =>
+                            navigate('Quiz', { deck: deck })
+                        }
+                    />
+                </View>
             </View>
         )
     }
@@ -66,10 +63,38 @@ class DeckView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#877CB0',
     },
+    deckTitles: {
+        flex: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#754B8E',
+        margin: 10
+    },
+    buttonGroup: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'stretch',
+        // backgroundColor: 'blue'
+    },
+    title: {
+        fontSize: 80,
+        color: '#FFFEAA'
+    },
+    totalCards: {
+        fontSize: 40,
+        color: '#554600'
+    },
+    addBtn: {
+        backgroundColor: '#12073B',
+        borderColor: 'red'
+    },
+    startQuiz: {
+        backgroundColor: 'yellow',
+        color: 'red',
+    }
 });
 
 export default DeckView;

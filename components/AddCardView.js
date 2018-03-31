@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import {
     KeyboardAvoidingView, Text, TextInput,
-    StyleSheet, SubmitBtn, TouchableOpacity, Keyboard
+    StyleSheet, SubmitBtn, Button, Keyboard, View
 } from 'react-native';
 import { addCardToDeck } from '../utils/api.js';
 import PropTypes from 'prop-types';
 
 class AddCardView extends Component {
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: `Add new card`,
+            headerTintColor: '#754B8E',
+            headerStyle: { backgroundColor: '#522B73' }
+        }
+    }
 
     state = {
         card: {
@@ -51,21 +58,30 @@ class AddCardView extends Component {
                 behavior="padding"
                 style={styles.container}
             >
-                <Text>Question</Text>
-                <TextInput
-                    style={{height: 40, width: 100}}
-                    onChangeText={(text) => this.onInputChange('question', text)}
-                    value={this.state.card.question}
-                />
-                <Text>Answer</Text>
-                <TextInput
-                    style={{height: 40, width: 100}}
-                    onChangeText={(text) => this.onInputChange('answer', text)}
-                    value={this.state.card.answer}
-                />
-                <TouchableOpacity onPress={this.onAddCardSubmit}>
-                    <Text>SUBMIT</Text>
-                </TouchableOpacity>
+                <View style={styles.formGroup}>
+                    <Text style={styles.text}>Question</Text>
+                    <TextInput
+                        style={{height: 40, width: 250}}
+                        onChangeText={(text) => this.onInputChange('question', text)}
+                        value={this.state.card.question}
+                    />
+                </View>
+                <View style={styles.formGroup}>
+                    <Text style={styles.text}>Answer</Text>
+                    <TextInput
+                        style={{height: 40, width: 250}}
+                        onChangeText={(text) => this.onInputChange('answer', text)}
+                        value={this.state.card.answer}
+                    />
+                </View>
+                <View
+                    style={styles.buttonGroup}
+                >
+                    <Button
+                        onPress={this.onAddCardSubmit}
+                        title="Submit"
+                    />
+                </View>
             </KeyboardAvoidingView>
         )
     }
@@ -79,9 +95,21 @@ AddCardView.propTypes = {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#754B8E',
+    },
+    text: {
+        color: '#FFFEAA'
+    },
+    formGroup: {
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonGroup: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'stretch',
     },
 });
 

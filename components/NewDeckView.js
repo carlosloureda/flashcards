@@ -19,6 +19,14 @@ import { NavigationActions } from 'react-navigation'
 
 class NewDeckView extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: 'New deck',
+            headerTintColor: '#754B8E',
+            headerStyle: { backgroundColor: '#522B73' }
+        }
+    }
+
     state = {
         title: ''
     }
@@ -43,14 +51,14 @@ class NewDeckView extends Component {
                 behavior="padding"
                 style={styles.container}
             >
-                <Text>Set the title of the deck</Text>
+                <Text style={styles.text} >Set the title of the deck</Text>
                 <TextInput
                     style={{height: 40, width: 100}}
                     onChangeText={(text) => this.setState({...this.state, title:text})}
                     value={this.state.title}
                 />
                 <TouchableOpacity onPress={this.submit}>
-                    <Text>SUBMIT</Text>
+                    <Text style={styles.btn} >SUBMIT</Text>
                 </TouchableOpacity>
             </KeyboardAvoidingView>
         )
@@ -60,10 +68,17 @@ class NewDeckView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#754B8E',
         alignItems: 'center',
         justifyContent: 'center',
     },
+    text: {
+        color: '#FFFEAA'
+    },
+    btn: {
+        color: '#12073B'
+    }
+
 });
 
 export default NewDeckView;

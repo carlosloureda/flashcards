@@ -7,7 +7,7 @@ import { clearLocalNotification, setLocalNotification } from '../utils/helpers.j
 
 const Progress = ({total, answered}) => {
     return (
-        <Text>{answered + 1}/{total}</Text>
+        <Text style={styles.progress}>{answered + 1}/{total}</Text>
     )
 }
 
@@ -17,7 +17,9 @@ const CORRECT_ANSWER = 'CORRECT_ANSWER';
 class QuizView extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: `Quiz: ${navigation.state.params.deck.title}`
+            title: `Quiz: ${navigation.state.params.deck.title}`,
+            headerTintColor: '#754B8E',
+            headerStyle: { backgroundColor: '#522B73' }
         }
     }
 
@@ -70,52 +72,95 @@ class QuizView extends Component {
         const { questions, questions_answered, actual_question_index } = this.state;
         const total_questions = questions.length ;
         return (
-            <View style={styles.container}>
-                {questions_answered < total_questions &&
-                    <Progress
-                        total={total_questions} answered={questions_answered}
-                    />
-                }
-
-                {!!total_questions && ! this.state.flip_card && questions_answered < total_questions &&
-                    <View>
-                        <Text>{questions[actual_question_index].question}</Text>
-                        <Button
-                            title="Show answer"
-                            onPress={() => this.flipCard()}
+            // <View style={styles.wrapper}>
+                <View style={styles.container}>
+                    {questions_answered < total_questions &&
+                        <Progress
+                            total={total_questions} answered={questions_answered}
                         />
-                    </View>
-                }
+                    }
 
-                {this.state.flip_card && total_questions && questions_answered < total_questions &&
-                    <View>
-                        <Text>{questions[0].answer}</Text>
-                        <Button
-                            title="Incorrect"
-                            onPress={() => this.sendAnswer(actual_question_index, WRONG_ANSWER)}
-                        />
-                        <Button
-                            title="Correct"
-                            onPress={() => this.sendAnswer(actual_question_index, CORRECT_ANSWER)}
-                        />
-                    </View>
-                }
+                    {!!total_questions && ! this.state.flip_card && questions_answered < total_questions &&
+                        <View style={styles.content}>
+                            <Text style={styles.question}>{questions[actual_question_index].question}</Text>
+                            <View style={styles.button}>
+                                <Button
+                                    title="Show answer"
+                                    onPress={() => this.flipCard()}
+                                />
+                            </View>
+                        </View>
+                    }
 
-                {questions_answered === total_questions &&
-                    <Text>Final Score: {this.finalScore()}%</Text>
-                }
-            </View>
+                    {this.state.flip_card && total_questions && questions_answered < total_questions &&
+                        <View style={styles.content}>
+                            <Text style={styles.answer}>{questions[0].answer}</Text>
+                            <View style={styles.buttonGroup}>
+                                <Button
+                                    title="Incorrect"
+                                    onPress={() => this.sendAnswer(actual_question_index, WRONG_ANSWER)}
+                                />
+                                <Button
+                                    title="Correct"
+                                    onPress={() => this.sendAnswer(actual_question_index, CORRECT_ANSWER)}
+                                />
+                            </View>
+                        </View>
+                    }
+
+                    {questions_answered === total_questions &&
+                        <View>
+                            <Text>Final Score: {this.finalScore()}%</Text>
+                            <Button
+                                title="Home"
+                                onPress={() => navigate('Home', {})}
+                            />
+                        </View>
+                    }
+                </View>
+            // </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        backgroundColor: '#877CB0',
+    },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#754B8E',
+        margin: 10,
+        borderRadius: 10
     },
+    content: {
+        justifyContent: 'space-between',
+        flex: 3
+    },
+    progress: {
+        flex: 1,
+        alignSelf: 'flex-start',
+        color: '#BBA7CD',
+        padding: 5,
+        fontSize: 15
+    },
+    question: {
+        fontSize: 30,
+        color: '#FFFEAA'
+    },
+    answer: {
+        fontSize: 20,
+        color: '#554600'
+    },
+    button: {
+        alignSelf: 'stretch',
+    },
+    buttonGroup: {
+        alignSelf: 'flex-end',
+        justifyContent: 'flex-start'
+    }
 });
 
 export default QuizView;

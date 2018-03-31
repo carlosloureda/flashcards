@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity } from 'react-native';
+import {
+    View, Text, StyleSheet,
+    Button, FlatList, TouchableOpacity,
+    Platform
+} from 'react-native';
 import { getDecks } from '../utils/api.js';
 import { cardsInDeck } from '../utils/model.js';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 const DeckListItem = ({deck, navigate}) => {
     // TODO: fix why there is deck inside deck
     const numberOfCards = cardsInDeck(deck);
     return (
         <TouchableOpacity
-            style={styles.deckCard}
             onPress={() => navigate('DeckView', {title: deck.title}) }
         >
-            <Text>{deck.title}</Text>
-            <Text>{numberOfCards} cards</Text>
-            {/* <Text>{numberOfCards} {numberOfCards == 1 ? 'card' : 'cardS'}</Text> */}
+            <View style={styles.deck}>
+                <Text style={styles.title}>{deck.title}</Text>
+                <Text style={styles.row}>{numberOfCards} cards</Text>
+                {/* <Text>{numberOfCards} {numberOfCards == 1 ? 'card' : 'cardS'}</Text> */}
+            </View>
         </TouchableOpacity>
     )
 }
@@ -21,6 +27,8 @@ class DeckListView extends Component {
 
     static navigationOptions = {
         title: 'Flashcards',
+        headerTintColor: '#754B8E',
+        headerStyle: { backgroundColor: '#522B73' }
     };
 
     state = {
@@ -52,6 +60,7 @@ class DeckListView extends Component {
     render() {
         const { navigate } = this.props.navigation;
         const navigation = this.props.navigation;
+        const tintColor = '#12073B'
         return (
             <View style={styles.container}>
                 <FlatList
@@ -60,12 +69,19 @@ class DeckListView extends Component {
                         <DeckListItem deck={item} navigate={navigate} />
                     }
                 />
-                <Button
-                    title="Create new deck"
-                    onPress={() =>
-                        navigate('NewDeck', { })
-                    }
-                />
+                {Platform.OS === 'ios' ?
+                    <Ionicons
+                        style={styles.fabButton}
+                        name='ios-add-circle' size={60} color={tintColor}
+                        onPress={() => navigate('NewDeck', { })}
+                        />
+                        :
+                    <Ionicons
+                        style={styles.fabButton}
+                        name='md-add-circle' size={60} color={tintColor}
+                        onPress={() => navigate('NewDeck', { })}
+                    />
+                }
             </View>
         )
     }
@@ -74,20 +90,39 @@ class DeckListView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#877CB0',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    deckCard: {
-        // display: 'flex',
+    row: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        color: '#554600'
+    },
+    title: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        fontSize: 30,
+        color: '#FFFEAA'
+    },
+    deck: {
         // flex: 1,
-        // // width:400,
-        // borderStyle: 'solid',
-        // borderColor: 'black',
-        // borderRadius: 10,
-        // color: 'red',
-        // backgroundColor: 'blue'
+        backgroundColor: '#754B8E',
+        alignItems: 'center',
+        width: 300,
+        height: 100,
+        marginTop: 20,
+        borderRadius: 10,
+    },
+    fabButton: {
+        alignSelf: 'flex-end',
+        margin: 5
+        // flexDirection: 'column',
+        // justifyContent: 'flex-end'
     }
+
 });
 
 export default DeckListView;
