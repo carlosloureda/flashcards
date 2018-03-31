@@ -125,11 +125,11 @@ const styles = StyleSheet.create({
         width: 300,
         height: 100,
         marginTop: 20,
-        borderRadius: 10,
+        // borderRadius: 10,
     },
     fabButton: {
         alignSelf: 'flex-end',
-        margin: 5
+        margin: 5,
         // flexDirection: 'column',
         // justifyContent: 'flex-end'
     }

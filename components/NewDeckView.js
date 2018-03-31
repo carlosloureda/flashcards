@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import {
     KeyboardAvoidingView, Text, TextInput,
     StyleSheet, SubmitBtn, TouchableOpacity,
-    Keyboard, Button
+    Keyboard, Button, View
 } from 'react-native';
 import DeckView from './DeckView';
 import { saveDeckTitle } from '../utils/api.js';
 import { NavigationActions } from 'react-navigation'
-import { primaryColor, titleColor } from '../utils/colors';
+import { primaryColor, titleColor, primaryButton } from '../utils/colors';
 import { connect } from 'react-redux'
 import { addNewDeck } from '../actions/index'
 
@@ -45,21 +45,23 @@ class NewDeckView extends Component {
                 behavior="padding"
                 style={styles.container}
             >
-                <Text style={styles.text} >Set the title of the deck</Text>
-                <TextInput
-                    style={{height: 40, width: 100}}
-                    onChangeText={(text) => this.setState({...this.state, title:text})}
-                    value={this.state.title}
-                />
-                {/* <TouchableOpacity onPress={this.submit}>
-                    <Text style={styles.btn} >SUBMIT</Text>
-                </TouchableOpacity> */}
-                <Button
-                    title="Submit"
-                    color='#522B73'
-                    // style={styles.startQuiz}
-                    onPress={this.submit}
-                />
+                <View style={styles.formGroup}>
+                    <Text style={styles.text} >Set the title of the deck</Text>
+                    <TextInput
+                        style={{height: 100, width: 250}}
+                        multiline = {true}
+                        numberOfLines = {2}
+                        onChangeText={(text) => this.setState({...this.state, title:text})}
+                        value={this.state.title}
+                    />
+                </View>
+                <View style={styles.buttonGroup}>
+                    <Button
+                        title="Create deck"
+                        color={primaryButton}
+                        onPress={this.submit}
+                    />
+                </View>
             </KeyboardAvoidingView>
         )
     }
@@ -69,15 +71,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: primaryColor,
-        alignItems: 'center',
+        // alignItems: 'center',
         justifyContent: 'center',
     },
     text: {
         color: titleColor
     },
-    btn: {
-        color: primaryColor
-    }
+    formGroup: {
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonGroup: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'stretch',
+        height: 100
+    },
 
 });
 

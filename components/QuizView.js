@@ -4,7 +4,10 @@ import { getDeck } from '../utils/api.js';
 import { cardsInDeck } from '../utils/model.js';
 import AddCardView from './AddCardView';
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers.js';
-import { primaryColor, secondaryColor, titleColor, textColor } from '../utils/colors.js';
+import {
+    primaryColor, secondaryColor,
+    titleColor, textColor, primaryButton
+} from '../utils/colors.js';
 
 const Progress = ({total, answered}) => {
     return (
@@ -73,8 +76,29 @@ class QuizView extends Component {
 
         const { questions, questions_answered, actual_question_index } = this.state;
         const total_questions = questions.length ;
-        return (
-            // <View style={styles.wrapper}>
+
+        if (questions_answered === total_questions) {
+            const finalScore = this.finalScore();
+            return (
+                <View style={styles.finalView}>
+                    <View style={styles.finalScore}>
+                        <Text style={styles.finalTextHeader} >
+                            {finalScore >= 50 ? 'Congrats!' : ':) Keep studying'}
+                        </Text>
+                        <Text style={styles.finalTextResult} >Final Score: {finalScore}% </Text>
+                    </View>
+                    <View style={styles.buttonGroup}>
+                        <Button
+                            title="Home"
+                            color={primaryButton}
+                            onPress={() => popToTop()}
+                        />
+                    </View>
+                </View>
+            )
+        }
+        else {
+            return (
                 <View style={styles.container}>
                     {questions_answered < total_questions &&
                         <Progress
@@ -85,11 +109,12 @@ class QuizView extends Component {
                     {!!total_questions && ! this.state.flip_card && questions_answered < total_questions &&
                         <View style={styles.content}>
                             <Text style={styles.question}>{questions[actual_question_index].question}</Text>
-                            <View style={styles.button}>
+                            <View style={styles.buttonGroup}>
                                 <Button
                                     title="Show answer"
+                                    color={primaryButton}
                                     onPress={() => this.flipCard()}
-                                />
+                                    />
                             </View>
                         </View>
                     }
@@ -100,46 +125,29 @@ class QuizView extends Component {
                             <View style={styles.buttonGroup}>
                                 <Button
                                     title="Incorrect"
+                                    color={'red'}
                                     onPress={() => this.sendAnswer(actual_question_index, WRONG_ANSWER)}
-                                />
+                                    />
                                 <Button
                                     title="Correct"
+                                    color={'green'}
                                     onPress={() => this.sendAnswer(actual_question_index, CORRECT_ANSWER)}
                                 />
                             </View>
                         </View>
                     }
-
-                    {questions_answered === total_questions &&
-                        <View>
-                            <Text>Final Score: {this.finalScore()}%</Text>
-                            <Button
-                                title="Home"
-                                onPress={() => popToTop()}
-                            />
-                        </View>
-                    }
                 </View>
-            // </View>
-        )
+            )
+        }
     }
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
-        backgroundColor: '#877CB0',
-    },
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: primaryColor,
-        margin: 10,
-        borderRadius: 10
-    },
-    content: {
         justifyContent: 'space-between',
-        flex: 3
+        backgroundColor: primaryColor,
     },
     progress: {
         flex: 1,
@@ -147,6 +155,30 @@ const styles = StyleSheet.create({
         color: secondaryColor,
         padding: 5,
         fontSize: 15
+    },
+    content: {
+        flex: 3,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    finalView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: primaryColor,
+    },
+    finalScore: {
+        paddingTop: 200,
+        flex:1
+    },
+    finalTextHeader: {
+        fontSize: 20,
+        textAlign: 'center'
+    },
+    finalTextResult: {
+        fontSize: 30,
+        textAlign: 'center'
     },
     question: {
         fontSize: 30,
@@ -156,12 +188,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: textColor
     },
-    button: {
-        alignSelf: 'stretch',
-    },
     buttonGroup: {
-        alignSelf: 'flex-end',
-        justifyContent: 'flex-start'
+        alignSelf: 'stretch',
     }
 });
 

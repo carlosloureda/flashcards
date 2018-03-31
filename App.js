@@ -6,7 +6,6 @@ import DeckView from './components/DeckView';
 import NewDeckView from './components/NewDeckView';
 import AddCardView from './components/AddCardView';
 import QuizView from './components/QuizView';
-import FlexboxExamples from './components/FlexboxExamples';
 import { setLocalNotification } from './utils/helpers'
 
 import { createStore, applyMiddleware, compose } from 'redux'
@@ -30,7 +29,6 @@ const store = createStore(
 
 const Stack = StackNavigator({
   Home: { screen: DeckListView },
-  // Home: { screen: FlexboxExamples },
   NewDeck: { screen: NewDeckView },
   DeckView: { screen: DeckView },
   AddCard: { screen: AddCardView },
