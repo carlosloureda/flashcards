@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Button, FlatList, Animated } from 'react-native';
 import { fetchDeck } from '../actions/index';
 import { cardsInDeck } from '../utils/model.js';
 import AddCardView from './AddCardView';
@@ -18,18 +18,30 @@ class DeckView extends Component {
         }
     }
 
+    state = {
+        fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
+    }
+
     componentDidMount = () => {
         const deckTitle = this.props.navigation.state.params.title;
-        this.props.fetchDeck(deckTitle).then((res) => {
-        })
+
+        Animated.timing(
+            this.state.fadeAnim,
+            {
+              toValue: 1,
+              duration: 5000,
+            }
+        ).start();
     }
 
     render() {
         const deckTitle = this.props.navigation.state.params.title;
         const { navigate } = this.props.navigation;
         const deck = this.props.decks[deckTitle];
+        const { fadeAnim } = this.state;
+
         return (
-            <View style={styles.container}>
+            <Animated.View style={[styles.container, {opacity: fadeAnim} ]}>
                 {deck &&
                     <View style={styles.deckTitles}>
                         <Text style={styles.title}>{deck.title}</Text>
@@ -57,7 +69,7 @@ class DeckView extends Component {
                         />
                     }
                 </View>
-            </View>
+            </Animated.View>
         )
     }
 }
