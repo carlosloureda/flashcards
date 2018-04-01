@@ -6,7 +6,7 @@ import AddCardView from './AddCardView';
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers.js';
 import {
     primaryColor, secondaryColor,
-    titleColor, textColor, primaryButton
+    titleColor, textColor, primaryButton, secondaryButton
 } from '../utils/colors.js';
 
 const Progress = ({total, answered}) => {
@@ -72,8 +72,8 @@ class QuizView extends Component {
     }
 
     render() {
-        const { navigate, popToTop } = this.props.navigation;
-
+        const { navigate, popToTop, replace } = this.props.navigation;
+        const { deck } = this.props.navigation.state.params;
         const { questions, questions_answered, actual_question_index } = this.state;
         const total_questions = questions.length ;
 
@@ -92,6 +92,11 @@ class QuizView extends Component {
                             title="Home"
                             color={primaryButton}
                             onPress={() => popToTop()}
+                        />
+                        <Button
+                            title="Restart quiz"
+                            color={secondaryButton}
+                            onPress={() => replace('Quiz', {deck: deck})}
                         />
                     </View>
                 </View>

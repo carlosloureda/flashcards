@@ -3,7 +3,10 @@ import { View, Text, StyleSheet, Button, FlatList } from 'react-native';
 import { fetchDeck } from '../actions/index';
 import { cardsInDeck } from '../utils/model.js';
 import AddCardView from './AddCardView';
-import { secondaryColor, primaryColor, titleColor, textColor, primaryButton } from '../utils/colors.js';
+import {
+    secondaryColor, primaryColor, titleColor,
+    textColor, primaryButton, secondaryButton
+} from '../utils/colors.js';
 import { connect } from 'react-redux'
 
 class DeckView extends Component {
@@ -38,7 +41,7 @@ class DeckView extends Component {
                     <Button
                         title="Add card"
                         style={styles.addBtn}
-                        color='#12073B'
+                        color={primaryButton}
                         onPress={() =>
                             navigate('AddCard', { title: deck.title })
                         }
@@ -46,7 +49,7 @@ class DeckView extends Component {
                     {!!cardsInDeck(deck) &&
                         <Button
                             title="Start quiz"
-                            color='#522B73'
+                            color={secondaryButton}
                             style={styles.startQuiz}
                             onPress={() =>
                                 navigate('Quiz', { deck: deck })
