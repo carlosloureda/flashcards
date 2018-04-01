@@ -126,7 +126,7 @@ class QuizView extends Component {
 
                     {this.state.flip_card && total_questions && questions_answered < total_questions &&
                         <View style={styles.content}>
-                            <Text style={styles.answer}>{questions[0].answer}</Text>
+                            <Text style={styles.answer}>{questions[actual_question_index].answer}</Text>
                             <View style={styles.buttonGroup}>
                                 <Button
                                     title="Incorrect"
@@ -186,10 +186,12 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     question: {
+        padding: 20,
         fontSize: 30,
         color: titleColor
     },
     answer: {
+        padding: 20,
         fontSize: 20,
         color: textColor
     },
