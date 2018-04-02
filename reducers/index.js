@@ -15,15 +15,16 @@ function decks(state = defaultPostState, action) {
     switch (action.type) {
 
         case REQUEST_DECKS:
-            console.log("REQUEST_DECKS reducer");
-            return {
+            let b = {
                 ...state,
                 decks: action.items
             }
+            console.log("REQUEST_DECKS reducer, state: ", b);
+            return b;
         case NEW_DECK:
 
-            console.log("NEW_DECK reducer");
-            return  {
+        console.log("old state ", state);
+            let _newState =  {
                 ...state,
                 decks: {
                     ...state.decks,
@@ -33,15 +34,18 @@ function decks(state = defaultPostState, action) {
                     }
                 }
             }
+            console.log("NEW_DECK reducer: ", _newState);
+            return _newState;
         case REQUEST_DECK:
-            console.log("REQUEST_DECK reducer");
-            return {
+            let a =  {
                 ...state,
                 decks: {
                     ...state.decks,
                     [action.item.title]: action.item
                 }
             }
+            console.log("REQUEST_DECK reducer, state: ", a);
+            return a;
         case NEW_CARD:
             console.log("NEW_CARD reducer: ");
             questions = state.decks[action.deckId].questions;

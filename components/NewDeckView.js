@@ -28,10 +28,15 @@ class NewDeckView extends Component {
     submit = () => {
         console.log("submit done: ", this.state.title);
         const { replace } = this.props.navigation;
+        const { addNewDeck } = this.props;
+        const { title } = this.state;
         Keyboard.dismiss();
-        if (this.props && this.props.addNewDeck) {
-            this.props.addNewDeck(this.state.title).then(() => {
-                replace('DeckView', {title: this.state.title})
+        if( ! title ) {
+            return alert("please fill title of the deck")
+        }
+        if (addNewDeck) {
+            addNewDeck(title).then(() => {
+                replace('DeckView', {title: title})
             })
             .catch(err => {
                 console.log("Error: ",err);

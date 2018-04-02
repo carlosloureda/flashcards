@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, FlatList } from 'react-native';
 import { getDeck } from '../utils/api.js';
-import { cardsInDeck } from '../utils/model.js';
+import { cardsInDeck } from '../utils/helpers.js';
 import AddCardView from './AddCardView';
 import { clearLocalNotification, setLocalNotification } from '../utils/helpers.js';
 import {

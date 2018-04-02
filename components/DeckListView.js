@@ -11,7 +11,7 @@ import {
     primaryButton, primaryColor, secondaryColor,
     titleColor, textColor
 } from '../utils/colors.js';
-import { cardsInDeck } from '../utils/model.js';
+import { cardsInDeck } from '../utils/helpers.js';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 const DeckListItem = ({deck, navigate}) => {
@@ -41,18 +41,30 @@ class DeckListView extends Component {
         decks: []
     }
 
-    componentWillMount = () => {
-        console.log("componentWillMount");
-    }
     componentDidMount = () => {
-        this.props.fetchDecks().then((res) => {
+        // Thx for this: https://github.com/react-navigation/react-navigation/pull/3345
+        console.log("componentDidMount: ", this.props.navigation);
+        this._sub = this.props.navigation.addListener(
+            'didFocus',
+            this.fetchData
+        );
+    }
 
+    componentWillUnmount() {
+        this._sub.remove();
+    }
+
+    fetchData = () => {
+        console.log("Fetching data");
+        this.props.fetchDecks().then((res) => {
+            console.log("data fetched, decks should be available as this.props.decks");
         }).catch(err => {
             console.log("err: ", err);
         })
     }
 
     parseDecks = () => {
+        console.log("this.props.decks: ", this.props.decks);
         var decks = Object.values(this.props.decks).map(v => v);
         let positionForNotKey = -1;
         // trick to avoid: VirtualizedList: missing keys for items, make sure to specify a key property on each item or provide a custom keyExtractor.
@@ -65,6 +77,7 @@ class DeckListView extends Component {
         });
 
         decks.splice(positionForNotKey, 1);
+        console.log("decks ~~:", decks);
         return decks;
     }
 
@@ -119,19 +132,15 @@ const styles = StyleSheet.create({
         color: titleColor
     },
     deck: {
-        // flex: 1,
         backgroundColor: primaryColor,
         alignItems: 'center',
         width: 300,
         height: 100,
         marginTop: 20,
-        // borderRadius: 10,
     },
     fabButton: {
         alignSelf: 'flex-end',
         margin: 5,
-        // flexDirection: 'column',
-        // justifyContent: 'flex-end'
     }
 
 });

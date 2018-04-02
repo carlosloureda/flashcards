@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button, FlatList, Animated } from 'react-native';
 import { fetchDeck } from '../actions/index';
-import { cardsInDeck } from '../utils/model.js';
+import { cardsInDeck } from '../utils/helpers.js';
 import AddCardView from './AddCardView';
 import {
     secondaryColor, primaryColor, titleColor,

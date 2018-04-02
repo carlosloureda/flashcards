@@ -41,6 +41,10 @@ class AddCardView extends Component {
         const { goBack } = this.props.navigation;
         const { title } = this.props.navigation.state.params;
         Keyboard.dismiss()
+        if(!this.state.card.question && !this.state.card.answer ) {
+            return alert("please fill both fields")
+        }
+
         const card = {
             question: this.state.card.question,
             answer: this.state.card.answer

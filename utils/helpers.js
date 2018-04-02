@@ -2,6 +2,10 @@ import { Notifications, Permissions } from 'expo'
 import { AsyncStorage } from 'react-native'
 const NOTIFICATION_KEY = 'Flashcards:notifications'
 
+export const cardsInDeck = (deck) => {
+    return deck && deck.questions ? deck.questions.length :  0;
+}
+
 export function clearLocalNotification () {
     return AsyncStorage.removeItem(NOTIFICATION_KEY)
       .then(Notifications.cancelAllScheduledNotificationsAsync)

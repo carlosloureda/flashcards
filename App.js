@@ -19,12 +19,12 @@ const loggerMiddleware = createLogger()
 
 const store = createStore(
   reducer,
-  composeWithDevTools(
+  // composeWithDevTools(
     applyMiddleware(
       thunkMiddleware, // lets us dispatch() functions
       // loggerMiddleware // neat middleware that logs actions
     ),
-  )
+  // )
 );
 
 const Stack = StackNavigator({
