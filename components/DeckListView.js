@@ -43,7 +43,6 @@ class DeckListView extends Component {
 
     componentDidMount = () => {
         // Thx for this: https://github.com/react-navigation/react-navigation/pull/3345
-        console.log("componentDidMount: ", this.props.navigation);
         this._sub = this.props.navigation.addListener(
             'didFocus',
             this.fetchData
@@ -55,7 +54,6 @@ class DeckListView extends Component {
     }
 
     fetchData = () => {
-        console.log("Fetching data");
         this.props.fetchDecks().then((res) => {
             console.log("data fetched, decks should be available as this.props.decks");
         }).catch(err => {
@@ -64,7 +62,6 @@ class DeckListView extends Component {
     }
 
     parseDecks = () => {
-        console.log("this.props.decks: ", this.props.decks);
         var decks = Object.values(this.props.decks).map(v => v);
         let positionForNotKey = -1;
         // trick to avoid: VirtualizedList: missing keys for items, make sure to specify a key property on each item or provide a custom keyExtractor.
@@ -77,7 +74,6 @@ class DeckListView extends Component {
         });
 
         decks.splice(positionForNotKey, 1);
-        console.log("decks ~~:", decks);
         return decks;
     }
 

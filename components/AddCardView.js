@@ -52,7 +52,6 @@ class AddCardView extends Component {
         this.props.newCard(title, card)
         // addCardToDeck(title, card)
         .then((deck) => {
-            console.log("sucess saving card")
             goBack()
         })
         .catch((err) => console.log("error: ", err))

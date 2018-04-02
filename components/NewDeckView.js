@@ -26,7 +26,6 @@ class NewDeckView extends Component {
     }
 
     submit = () => {
-        console.log("submit done: ", this.state.title);
         const { replace } = this.props.navigation;
         const { addNewDeck } = this.props;
         const { title } = this.state;
